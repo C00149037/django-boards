@@ -1,12 +1,10 @@
-from django.shortcuts import render, get_object_or_404
-from django.urls import reverse
-from django.urls import resolve
-from django.test import TestCase
-from ..views import home, board_topics, new_topic
-from ..models import Board, Topic, Post
 from django.contrib.auth.models import User
-from ..forms import NewTopicForm
+from django.test import TestCase
+from django.urls import resolve, reverse
 
+from ..forms import NewTopicForm
+from ..models import Board, Post, Topic
+from ..views import new_topic
 
 
 class NewTopicTests(TestCase):
@@ -82,6 +80,7 @@ class NewTopicTests(TestCase):
         self.assertFalse(Topic.objects.exists())
         self.assertFalse(Post.objects.exists())
 
+
 class LoginRequiredNewTopicTests(TestCase):
     def setUp(self):
         Board.objects.create(name='Django', description='Django board.')
@@ -90,4 +89,4 @@ class LoginRequiredNewTopicTests(TestCase):
 
     def test_redirection(self):
         login_url = reverse('login')
-        self.assertRedirects(self.response, '{login_url}?next={url}'.format(login_url=login_url, url=self.url))       
+        self.assertRedirects(self.response, '{login_url}?next={url}'.format(login_url=login_url, url=self.url))

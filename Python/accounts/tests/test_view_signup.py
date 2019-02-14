@@ -1,12 +1,9 @@
-from django.urls import reverse
-from django.urls import resolve
-from django.test import TestCase
 from django.contrib.auth.models import User
-from ..views import signup
+from django.test import TestCase
+from django.urls import resolve, reverse
+
 from ..forms import SignUpForm
-
-
-
+from ..views import signup
 
 
 class SignUpTests(TestCase):
@@ -30,14 +27,12 @@ class SignUpTests(TestCase):
 
     def test_form_inputs(self):
         '''
-        The view must contain five inputs: csrf, username, email,
-        password1, password2
+        The view must contain five inputs: csrf, username, email, password1, password2
         '''
         self.assertContains(self.response, '<input', 5)
         self.assertContains(self.response, 'type="text"', 1)
         self.assertContains(self.response, 'type="email"', 1)
         self.assertContains(self.response, 'type="password"', 2)
-
 
 
 class SuccessfulSignUpTests(TestCase):
@@ -64,14 +59,11 @@ class SuccessfulSignUpTests(TestCase):
     def test_user_authentication(self):
         '''
         Create a new request to an arbitrary page.
-        The resulting response should now have a `user` to its context,
-        after a successful sign up.
+        The resulting response should now have an `user` to its context, after a successful sign up.
         '''
         response = self.client.get(self.home_url)
         user = response.context.get('user')
         self.assertTrue(user.is_authenticated)
-
-
 
 
 class InvalidSignUpTests(TestCase):
